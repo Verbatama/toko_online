@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Gambar</th>
             <th>Nama Produk</th>
             <th>Harga</th>
             <th>Stok</th>
@@ -21,6 +22,13 @@
         @foreach($produks as $produk)
         <tr>
             <td>{{ $produk->id }}</td>
+            <td>
+                @if($produk->gambar_produk)
+                    <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                @else
+                    <span class="text-muted">No Image</span>
+                @endif
+            </td>
             <td>{{ $produk->nama_produk }}</td>
             <td>Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</td>
             <td>{{ $produk->stok_produk }}</td>

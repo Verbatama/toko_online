@@ -28,6 +28,7 @@ class ProdukController extends Controller
             'deskripsi_produk' => 'required',
             'stok_produk' => 'required|integer|min:0',
             'kategori_id' => 'required|exists:kategoris,id',
+            'gambar_produk' => 'nullable|url',
         ]);
 
         Produk::create($request->all());
@@ -51,6 +52,7 @@ class ProdukController extends Controller
             'deskripsi_produk' => 'required',
             'stok_produk' => 'required|integer|min:0',
             'kategori_id' => 'required|exists:kategoris,id',
+            'gambar_produk' => 'nullable|url',
         ]);
 
         $produk->update($request->all());

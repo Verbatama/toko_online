@@ -24,6 +24,16 @@
         <input type="text" name="nama_produk" class="form-control" value="{{ $produk->nama_produk }}" required>
     </div>
     <div class="mb-3">
+        <label>URL Gambar Produk (CDN)</label>
+        <input type="url" name="gambar_produk" class="form-control" value="{{ $produk->gambar_produk }}" placeholder="https://example.com/image.jpg">
+        <small class="text-muted">Masukkan URL gambar dari CDN atau layanan hosting gambar</small>
+        @if($produk->gambar_produk)
+        <div class="mt-2">
+            <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd;">
+        </div>
+        @endif
+    </div>
+    <div class="mb-3">
         <label>Harga Produk</label>
         <input type="number" name="harga_produk" class="form-control" step="0.01" value="{{ $produk->harga_produk }}" required>
     </div>

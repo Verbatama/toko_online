@@ -21,6 +21,11 @@
         <input type="text" name="nama_produk" class="form-control" required>
     </div>
     <div class="mb-3">
+        <label>URL Gambar Produk (CDN)</label>
+        <input type="url" name="gambar_produk" class="form-control" placeholder="https://example.com/image.jpg">
+        <small class="text-muted">Masukkan URL gambar dari CDN atau layanan hosting gambar</small>
+    </div>
+    <div class="mb-3">
         <label>Harga Produk</label>
         <input type="number" name="harga_produk" class="form-control" step="0.01" required>
     </div>
