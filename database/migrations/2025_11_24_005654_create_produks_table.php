@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kategori_id');
+            $table->foreign('kategori_id')->references('id')->on('kategoris')->onDelete('cascade');
             $table->string('nama_produk');
             $table->text('deskripsi_produk');
-            $table->decimal('harga_produk', 10, 2);
+            $table->unsignedBigInteger('harga_produk');
             $table->unsignedInteger('stok_produk');
             $table->string('gambar_produk')->nullable();
             $table->timestamps();

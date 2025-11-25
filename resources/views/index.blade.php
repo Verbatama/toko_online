@@ -84,6 +84,9 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .product-card:hover {
@@ -155,10 +158,10 @@
         <div class="product-grid">
             @forelse($produks as $produk)
             <!-- Product Card -->
-            <div class="product-card">
+            <a href="{{ route('produk.detail', $produk->id) }}" class="product-card">
                 @if($produk->gambar_produk)
-                    <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" class="product-image" onerror="this.src='https://via.placeholder.com/250x250/3498db/ffffff?text={{ urlencode($produk->nama_produk) }}'">
-                @else
+                        <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" class="product-image" onerror="this.src='https://via.placeholder.com/250x250/3498db/ffffff?text={{ urlencode($produk->nama_produk) }}'">
+                    @else
                     <img src="" alt="{{ $produk->nama_produk }}" class="product-image">
                 @endif
                 <div class="product-info">
@@ -173,7 +176,7 @@
                     <p style="color: #e74c3c; font-size: 0.85rem; margin-top: 0.5rem;">Stok Habis</p>
                     @endif
                 </div>
-            </div>
+            </a>
             @empty
             <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #7f8c8d;">
                 <p style="font-size: 1.2rem;">Belum ada produk tersedia.</p>

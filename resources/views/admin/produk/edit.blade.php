@@ -5,7 +5,7 @@
 @section('content')
 <h1>Edit Produk</h1>
 
-<form action="{{ route('produk.update', $produk->id) }}" method="POST">
+<form action="{{ route('admin.produk.update', $produk->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -25,8 +25,8 @@
     </div>
     <div class="mb-3">
         <label>URL Gambar Produk (CDN)</label>
-        <input type="url" name="gambar_produk" class="form-control" value="{{ $produk->gambar_produk }}" placeholder="https://example.com/image.jpg">
-        <small class="text-muted">Masukkan URL gambar dari CDN atau layanan hosting gambar</small>
+        <input type="url" name="gambar_produk" class="form-control" value="{{ $produk->gambar_produk }}" placeholder="Masukkan URL gambar produk">
+       
         @if($produk->gambar_produk)
         <div class="mt-2">
             <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd;">
@@ -46,6 +46,6 @@
         <textarea name="deskripsi_produk" class="form-control" rows="4" required>{{ $produk->deskripsi_produk }}</textarea>
     </div>
     <button class="btn btn-success">Update</button>
-    <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
+    <a href="{{ route('admin.produk.index') }}" class="btn btn-secondary">Kembali</a>
 </form>
 @endsection

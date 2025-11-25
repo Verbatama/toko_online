@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\Produk;
+namespace App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ProdukController extends Controller
+class LoginAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,9 +27,16 @@ class ProdukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function loginAdmin(Request $request)
     {
-        //
+        if(Auth::attempt($request->only('email', 'password'))){
+            if(Auth::user()->role == 'admin'){
+                return redirect('/admin/dashboard');
+            }
+            Auth::logout(); // logout jika bukan admin
+            return back()->withErrors(['email' => 'Akses ditolak']);
+        }
+        return back()->withErrors(['email' => 'Email atau password salah']);
     }
 
     /**
@@ -62,11 +70,4 @@ class ProdukController extends Controller
     {
         //
     }
-
-    public function detail_produk($id)
-    {
-        $product = Produk::findOrFail($id);
-        return view('user.detail', compact('product'));
 }
-            
-    }

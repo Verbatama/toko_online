@@ -67,4 +67,10 @@ class ProdukController extends Controller
 
         return redirect('/admin/produk')->with('success', 'Produk berhasil dihapus!');
     }
+//         public function show($id)
+//     {
+//         $product = Produk::findOrFail($id);
+//         return view('user.detail', compact('product'));
+// }
+     
 }

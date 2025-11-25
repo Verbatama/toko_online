@@ -4,7 +4,7 @@
 
 @section('content')
 <h1>Daftar Produk</h1>
-<a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">Tambah Produk</a>
+<a href="{{ route('admin.produk.create') }}" class="btn btn-primary mb-3">Tambah Produk</a>
 
 <table class="table table-bordered">
     <thead>
@@ -34,8 +34,8 @@
             <td>{{ $produk->stok_produk }}</td>
             <td>{{ Str::limit($produk->deskripsi_produk, 50) }}</td>
             <td>
-                <a href="{{ route('produk.edit', $produk->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" style="display:inline">
+                <a href="{{ route('admin.produk.edit', $produk->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                <form action="{{ route('admin.produk.destroy', $produk->id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</button>
