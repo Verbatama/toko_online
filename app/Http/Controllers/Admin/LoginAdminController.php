@@ -1,73 +1,65 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LoginAdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Tampilkan form login admin
+    public function showLoginForm()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function loginAdmin(Request $request)
-    {
-        if(Auth::attempt($request->only('email', 'password'))){
-            if(Auth::user()->role == 'admin'){
-                return redirect('/admin/dashboard');
+        // Jika sudah login sebagai admin, redirect ke admin panel
+        if (session('user_id')) {
+            $user = User::find(session('user_id'));
+            if ($user && $user->role === 'admin') {
+                return redirect('/admin');
             }
-            Auth::logout(); // logout jika bukan admin
-            return back()->withErrors(['email' => 'Akses ditolak']);
+            // Jika login sebagai user, redirect ke home
+            return redirect('/');
         }
-        return back()->withErrors(['email' => 'Email atau password salah']);
+        
+        return view('admin.login');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Proses login admin
+    public function login(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'password' => 'required',
+        ]);
+
+        // Cari user berdasarkan nama (username) dan pastikan role adalah admin
+        $user = User::where('nama', $request->nama)
+                    ->where('role', 'admin')
+                    ->first();
+
+        // Cek apakah user ada dan password benar
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Simpan data admin ke session
+            session([
+                'user_id' => $user->id,
+                'user_name' => $user->nama,
+                'user_email' => $user->email,
+                'user_role' => $user->role
+            ]);
+
+            return redirect('/admin')->with('success', 'Login admin berhasil!');
+        }
+
+        return back()->withErrors([
+            'nama' => 'Username atau password salah.',
+        ])->withInput();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Logout admin
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        session()->flush();
+        return redirect('/admin/login')->with('success', 'Logout berhasil!');
     }
 }

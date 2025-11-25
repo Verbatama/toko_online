@@ -140,19 +140,34 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="#" class="navbar-brand">Toko Online</a>
+            <a href="{{ url('/') }}" class="navbar-brand">Toko Online</a>
             <ul class="navbar-menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Produk</a></li>
-                <li><a href="#">Akun</a></li>
-                <li><a href="#"></a></li>
+                <li><a href="{{ url('/') }}">Home</a></li>
+                @if(session('user_id'))
+                    <li><a href="#">Halo, {{ session('user_name') }}</a></li>
+                    <li>
+                        <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-size: 1rem;">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ url('/login') }}">Login</a></li>
+                    <li><a href="{{ url('/register') }}">Register</a></li>
+                @endif
             </ul>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
-      
+        @if(session('success'))
+            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; text-align: center;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <h1 class="page-title">Selamat Datang di Toko Online</h1>
 
         <!-- Product Grid -->
         <div class="product-grid">

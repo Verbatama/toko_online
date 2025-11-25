@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -65,8 +66,8 @@ class ProdukController extends Controller
 
     public function detail_produk($id)
     {
-        $product = Produk::findOrFail($id);
-        return view('user.detail', compact('product'));
+        $produk = Produk::findOrFail($id);
+        return view('user.detail', compact('produk'));
 }
             
     }

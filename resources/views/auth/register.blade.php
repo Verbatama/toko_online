@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - Toko Online</title>
+    <title>Register User - Toko Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-white">
@@ -12,24 +12,23 @@
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-center mb-2">Login Admin</h3>
-                        <p class="text-center text-muted mb-4">Panel Administrator</p>
+                        <h3 class="text-center mb-4">Register User</h3>
                         
-                        @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
-
-                        @if(session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
-                        @endif
-
-                        <form action="{{ url('/admin/login') }}" method="POST">
+                        <form action="{{ url('/register') }}" method="POST">
                             @csrf
                             
                             <div class="mb-3">
-                                <label class="form-label">Username Admin</label>
+                                <label class="form-label">Nama</label>
                                 <input type="text" name="nama" class="form-control" value="{{ old('nama') }}" required>
                                 @error('nama')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                                @error('email')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -42,11 +41,16 @@
                                 @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Login Admin</button>
+                            <div class="mb-3">
+                                <label class="form-label">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation" class="form-control" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Daftar</button>
                         </form>
 
                         <div class="text-center mt-3">
-                            <a href="{{ url('/') }}" class="text-muted">← Kembali ke Home</a>
+                            <a href="{{ url('/login') }}">Sudah punya akun? Login</a>
                         </div>
                     </div>
                 </div>

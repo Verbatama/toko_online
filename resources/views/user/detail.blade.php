@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->nama_produk }} - Toko Online</title>
+    <title>{{ $produk->nama_produk }} - Toko Online</title>
     <style>
         * {
             margin: 0;
@@ -128,38 +128,37 @@
     <div class="container">
         <a href="/" class="back-link">← Kembali</a>
 
-        @if($product->gambar_produk)
-            <img src="{{ $product->gambar_produk }}" alt="{{ $product->nama_produk }}" class="product-image">
+        @if($produk->gambar_produk)
+            <img src="{{ $produk->gambar_produk }}" alt="{{ $produk->nama_produk }}" class="product-image">
         @endif
 
-        <h1 class="product-title">{{ $product->nama_produk }}</h1>
-
-        <div class="product-price">Rp {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
+        <h1 class="product-title">{{ $produk->nama_produk }}</h1>
+        <div class="product-price">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</div>
 
         <div class="product-info">
-            @if($product->kategori)
-                <span><strong>Kategori:</strong> {{ $product->kategori->nama_kategori }}</span>
+            @if($produk->kategori)
+                <span><strong>Kategori:</strong> {{ $produk->kategori->nama_kategori }}</span>
             @endif
             <span><strong>Stok:</strong> 
-                @if($product->stok_produk > 0)
-                    <span style="color: #27ae60;">{{ $product->stok_produk }} unit</span>
+                @if($produk->stok_produk > 0)
+                    <span style="color: #27ae60;">{{ $produk->stok_produk }} unit</span>
                 @else
                     <span style="color: #e74c3c;">Habis</span>
                 @endif
             </span>
         </div>
 
-        @if($product->stok_produk > 0)
+        @if($produk->stok_produk > 0)
             <button class="btn">Tambah ke Keranjang</button>
             <button class="btn btn-buy">Beli Sekarang</button>
         @else
             <button class="btn" disabled>Stok Habis</button>
         @endif
 
-        @if($product->deskripsi_produk)
+        @if($produk->deskripsi_produk)
             <div class="product-description">
                 <h3>Deskripsi</h3>
-                <p>{{ $product->deskripsi_produk }}</p>
+                <p>{{ $produk->deskripsi_produk }}</p>
             </div>
         @endif
     </div>
