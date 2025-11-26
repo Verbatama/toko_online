@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Toko Online</title>
+    <title>Checkout - Toko Kita</title>
     <style>
         * {
             margin: 0;
@@ -204,7 +204,7 @@
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ url('/') }}" class="navbar-brand">Toko Online</a>
+            <a href="{{ url('/') }}" class="navbar-brand">Toko Kita</a>
         </div>
     </nav>
 

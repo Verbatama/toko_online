@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang Belanja - Toko Online</title>
+    <title>Keranjang Belanja - Toko Kita</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +21,7 @@
         .navbar {
             background-color: #2c3e50;
             padding: 1rem 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-container {
@@ -99,7 +100,7 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
         }
 
@@ -113,7 +114,8 @@
             color: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem;
             text-align: left;
         }
@@ -215,7 +217,7 @@
             background: white;
             border-radius: 10px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             margin-left: auto;
         }
@@ -246,7 +248,7 @@
             color: #7f8c8d;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .empty-cart h3 {
@@ -283,7 +285,8 @@
                 font-size: 0.9rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 0.5rem;
             }
 
@@ -297,14 +300,16 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ url('/') }}" class="navbar-brand">Toko Online</a>
+            <a href="{{ url('/') }}" class="navbar-brand">Toko Kita</a>
             <ul class="navbar-menu">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 <li><a href="{{ route('keranjang.index') }}">Keranjang</a></li>
+                <li><a href="{{ route('user.pesanan') }}">Pesanan Saya</a></li>
                 @if(session('logged_user_id'))
                     <li><a href="#">Halo, {{ session('logged_user_name') }}</a></li>
                     <li>
@@ -347,7 +352,7 @@
                         input.value = currentVal + 1;
                     }
                 }
-                
+
                 function decreaseQtyCart(id) {
                     const input = document.getElementById('qty-' + id);
                     const currentVal = parseInt(input.value) || 1;
@@ -355,12 +360,12 @@
                         input.value = currentVal - 1;
                     }
                 }
-                
+
                 // Validasi input manual untuk semua input di keranjang
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function () {
                     const inputs = document.querySelectorAll('input[type="number"][id^="qty-"]');
                     inputs.forEach(input => {
-                        input.addEventListener('input', function() {
+                        input.addEventListener('input', function () {
                             const maxStock = parseInt(this.getAttribute('data-max'));
                             let value = parseInt(this.value) || 1;
                             if (value < 1) value = 1;
@@ -370,7 +375,7 @@
                     });
                 });
             </script>
-            
+
             <div class="cart-table">
                 <table>
                     <thead>
@@ -384,40 +389,51 @@
                     </thead>
                     <tbody>
                         @foreach($keranjangs as $keranjang)
-                        <tr>
-                            <td>
-                                <div class="product-info">
-                                    @if($keranjang->produk->gambar_produk)
-                                        <img src="{{ $keranjang->produk->gambar_produk }}" alt="{{ $keranjang->produk->nama_produk }}" class="product-image">
-                                    @else
-                                        <img src="https://via.placeholder.com/80" alt="{{ $keranjang->produk->nama_produk }}" class="product-image">
-                                    @endif
-                                    <div class="product-details">
-                                        <h4>{{ $keranjang->produk->nama_produk }}</h4>
-                                        <p>{{ $keranjang->produk->kategori->nama_kategori ?? '' }}</p>
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        @if($keranjang->produk->gambar_produk)
+                                            <img src="{{ $keranjang->produk->gambar_produk }}"
+                                                alt="{{ $keranjang->produk->nama_produk }}" class="product-image">
+                                        @else
+                                            <img src="https://via.placeholder.com/80" alt="{{ $keranjang->produk->nama_produk }}"
+                                                class="product-image">
+                                        @endif
+                                        <div class="product-details">
+                                            <h4>{{ $keranjang->produk->nama_produk }}</h4>
+                                            <p>{{ $keranjang->produk->kategori->nama_kategori ?? '' }}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>Rp {{ number_format($keranjang->produk->harga_produk, 0, ',', '.') }}</td>
-                            <td>
-                                <form action="{{ route('keranjang.update', $keranjang->id) }}" method="POST" class="quantity-control" id="form-{{ $keranjang->id }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="button" onclick="decreaseQtyCart({{ $keranjang->id }})" class="btn btn-update" style="padding: 0.5rem 0.75rem;">-</button>
-                                    <input type="number" name="jumlah" id="qty-{{ $keranjang->id }}" value="{{ $keranjang->jumlah }}" min="1" max="{{ $keranjang->produk->stok_produk }}" data-max="{{ $keranjang->produk->stok_produk }}">
-                                    <button type="button" onclick="increaseQtyCart({{ $keranjang->id }})" class="btn btn-update" style="padding: 0.5rem 0.75rem;">+</button>
-                                    <button type="submit" class="btn btn-update">Update</button>
-                                </form>
-                            </td>
-                            <td><strong>Rp {{ number_format($keranjang->jumlah * $keranjang->produk->harga_produk, 0, ',', '.') }}</strong></td>
-                            <td>
-                                <form action="{{ route('keranjang.destroy', $keranjang->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Hapus produk dari keranjang?')">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>Rp {{ number_format($keranjang->produk->harga_produk, 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('keranjang.update', $keranjang->id) }}" method="POST"
+                                        class="quantity-control" id="form-{{ $keranjang->id }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="button" onclick="decreaseQtyCart({{ $keranjang->id }})"
+                                            class="btn btn-update" style="padding: 0.5rem 0.75rem;">-</button>
+                                        <input type="number" name="jumlah" id="qty-{{ $keranjang->id }}"
+                                            value="{{ $keranjang->jumlah }}" min="1" max="{{ $keranjang->produk->stok_produk }}"
+                                            data-max="{{ $keranjang->produk->stok_produk }}">
+                                        <button type="button" onclick="increaseQtyCart({{ $keranjang->id }})"
+                                            class="btn btn-update" style="padding: 0.5rem 0.75rem;">+</button>
+                                        <button type="submit" class="btn btn-update">Update</button>
+                                    </form>
+                                </td>
+                                <td><strong>Rp
+                                        {{ number_format($keranjang->jumlah * $keranjang->produk->harga_produk, 0, ',', '.') }}</strong>
+                                </td>
+                                <td>
+                                    <form action="{{ route('keranjang.destroy', $keranjang->id) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-delete"
+                                            onclick="return confirm('Hapus produk dari keranjang?')">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -433,10 +449,12 @@
                     <span class="summary-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
                 </div>
                 <div class="cart-actions">
-                    <a href="{{ route('checkout.index') }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">Checkout</a>
+                    <a href="{{ route('checkout.index') }}" class="btn btn-primary"
+                        style="flex: 1; text-align: center; text-decoration: none;">Checkout</a>
                     <form action="{{ route('keranjang.clear') }}" method="POST" style="flex: 1;">
                         @csrf
-                        <button type="submit" class="btn btn-secondary" style="width: 100%;" onclick="return confirm('Kosongkan keranjang?')">Kosongkan</button>
+                        <button type="submit" class="btn btn-secondary" style="width: 100%;"
+                            onclick="return confirm('Kosongkan keranjang?')">Kosongkan</button>
                     </form>
                 </div>
             </div>
@@ -449,4 +467,5 @@
         @endif
     </div>
 </body>
+
 </html>

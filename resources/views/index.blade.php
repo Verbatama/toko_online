@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Toko Online</title>
+    <title>Home - Toko Kita</title>
     <style>
         * {
             margin: 0;
@@ -140,7 +140,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ url('/') }}" class="navbar-brand">Toko Online</a>
+            <a href="{{ url('/') }}" class="navbar-brand">Toko Kita</a>
             <ul class="navbar-menu">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 @if(session('logged_user_id') && session('logged_user_role') === 'user')
@@ -175,7 +175,7 @@
             </div>
         @endif
 
-        <h1 class="page-title">Selamat Datang di Toko Online</h1>
+        <h1 class="page-title">Selamat Datang di Toko Kita</h1>
 
         <!-- Product Grid -->
         <div class="product-grid">
