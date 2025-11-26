@@ -21,6 +21,13 @@ Route::get('/admin/login', [LoginAdminController::class, 'showLoginForm'])->name
 Route::post('/admin/login', [LoginAdminController::class, 'login']);
 Route::post('/admin/logout', [LoginAdminController::class, 'logout'])->name('admin.logout');
 
+// KERANJANG ROUTES (harus login)
+Route::get('/keranjang', [App\Http\Controllers\KeranjangController::class, 'index'])->name('keranjang.index');
+Route::post('/keranjang', [App\Http\Controllers\KeranjangController::class, 'store'])->name('keranjang.store');
+Route::put('/keranjang/{id}', [App\Http\Controllers\KeranjangController::class, 'update'])->name('keranjang.update');
+Route::delete('/keranjang/{id}', [App\Http\Controllers\KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+Route::post('/keranjang/clear', [App\Http\Controllers\KeranjangController::class, 'clear'])->name('keranjang.clear');
+
 // ADMIN ROUTES (dengan pengecekan session)
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');

@@ -144,6 +144,7 @@
             <ul class="navbar-menu">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 @if(session('user_id'))
+                    <li><a href="{{ route('keranjang.index') }}">Keranjang</a></li>
                     <li><a href="#">Halo, {{ session('user_name') }}</a></li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
@@ -164,6 +165,12 @@
         @if(session('success'))
             <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; text-align: center;">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; text-align: center;">
+                {{ session('error') }}
             </div>
         @endif
 

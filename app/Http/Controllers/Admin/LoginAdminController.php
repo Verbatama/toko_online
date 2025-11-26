@@ -19,7 +19,7 @@ class LoginAdminController extends Controller
                 return redirect('/admin');
             }
             // Jika login sebagai user, redirect ke home
-            return redirect('/');
+            return redirect('/')->with('error', 'Akses ditolak');
         }
         
         return view('admin.login');

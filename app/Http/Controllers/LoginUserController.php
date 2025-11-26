@@ -75,7 +75,7 @@ class LoginUserController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:255|unique:users,nama',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -88,12 +88,12 @@ class LoginUserController extends Controller
         ]);
 
         // Auto login setelah register
-        session([
-            'user_id' => $user->id,
-            'user_name' => $user->nama,
-            'user_email' => $user->email,
-            'user_role' => $user->role
-        ]);
+        // session([
+        //     'user_id' => $user->id,
+        //     'user_name' => $user->nama,
+        //     'user_email' => $user->email,
+        //     'user_role' => $user->role
+        // ]);
 
         return redirect('/')->with('success', 'Registrasi berhasil!');
     }

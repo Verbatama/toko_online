@@ -149,8 +149,14 @@
         </div>
 
         @if($produk->stok_produk > 0)
-            <button class="btn">Tambah ke Keranjang</button>
-            <button class="btn btn-buy">Beli Sekarang</button>
+            <form action="{{ route('keranjang.store') }}" method="POST" style="display: inline;">
+                @csrf
+                <input type="hidden" name="produk_id" value="{{ $produk->id }}">
+                <label for="jumlah" style="margin-right: 10px;"><strong>Jumlah:</strong></label>
+                <input type="number" name="jumlah" id="jumlah" value="1" min="1" max="{{ $produk->stok_produk }}" 
+                       style="width: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px;">
+                <button type="submit" class="btn">Tambah ke Keranjang</button>
+            </form>
         @else
             <button class="btn" disabled>Stok Habis</button>
         @endif
