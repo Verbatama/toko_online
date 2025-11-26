@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\User as UserModel;
 
 class LoginUserController extends Controller
 {
@@ -28,7 +29,7 @@ class LoginUserController extends Controller
         ]);
 
         // Cari user berdasarkan nama (username) dan pastikan role adalah user
-        $user = User::where('nama', $request->nama)
+        $user = UserModel::where('nama', $request->nama)
                     ->where('role', 'user')
                     ->first();
 
@@ -77,7 +78,7 @@ class LoginUserController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        $user = User::create([
+        $user = UserModel::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),

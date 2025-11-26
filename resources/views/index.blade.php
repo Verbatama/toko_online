@@ -143,9 +143,10 @@
             <a href="{{ url('/') }}" class="navbar-brand">Toko Online</a>
             <ul class="navbar-menu">
                 <li><a href="{{ url('/') }}">Home</a></li>
-                @if(session('user_id'))
+                @if(session('logged_user_id') && session('logged_user_role') === 'user')
                     <li><a href="{{ route('keranjang.index') }}">Keranjang</a></li>
-                    <li><a href="#">Halo, {{ session('user_name') }}</a></li>
+                    <li><a href="{{ route('user.pesanan') }}">Pesanan Saya</a></li>
+                    <li><a href="#">Halo, {{ session('logged_user_name') }}</a></li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
                             @csrf

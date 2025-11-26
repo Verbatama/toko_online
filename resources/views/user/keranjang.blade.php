@@ -305,8 +305,8 @@
             <ul class="navbar-menu">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 <li><a href="{{ route('keranjang.index') }}">Keranjang</a></li>
-                @if(session('user_id'))
-                    <li><a href="#">Halo, {{ session('user_name') }}</a></li>
+                @if(session('logged_user_id'))
+                    <li><a href="#">Halo, {{ session('logged_user_name') }}</a></li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
                             @csrf
@@ -338,6 +338,39 @@
         @endif
 
         @if($keranjangs->count() > 0)
+            <script>
+                function increaseQtyCart(id) {
+                    const input = document.getElementById('qty-' + id);
+                    const maxStock = parseInt(input.getAttribute('data-max'));
+                    const currentVal = parseInt(input.value) || 1;
+                    if (currentVal < maxStock) {
+                        input.value = currentVal + 1;
+                    }
+                }
+                
+                function decreaseQtyCart(id) {
+                    const input = document.getElementById('qty-' + id);
+                    const currentVal = parseInt(input.value) || 1;
+                    if (currentVal > 1) {
+                        input.value = currentVal - 1;
+                    }
+                }
+                
+                // Validasi input manual untuk semua input di keranjang
+                document.addEventListener('DOMContentLoaded', function() {
+                    const inputs = document.querySelectorAll('input[type="number"][id^="qty-"]');
+                    inputs.forEach(input => {
+                        input.addEventListener('input', function() {
+                            const maxStock = parseInt(this.getAttribute('data-max'));
+                            let value = parseInt(this.value) || 1;
+                            if (value < 1) value = 1;
+                            if (value > maxStock) value = maxStock;
+                            this.value = value;
+                        });
+                    });
+                });
+            </script>
+            
             <div class="cart-table">
                 <table>
                     <thead>
@@ -367,10 +400,12 @@
                             </td>
                             <td>Rp {{ number_format($keranjang->produk->harga_produk, 0, ',', '.') }}</td>
                             <td>
-                                <form action="{{ route('keranjang.update', $keranjang->id) }}" method="POST" class="quantity-control">
+                                <form action="{{ route('keranjang.update', $keranjang->id) }}" method="POST" class="quantity-control" id="form-{{ $keranjang->id }}">
                                     @csrf
                                     @method('PUT')
-                                    <input type="number" name="jumlah" value="{{ $keranjang->jumlah }}" min="1" max="{{ $keranjang->produk->stok_produk }}">
+                                    <button type="button" onclick="decreaseQtyCart({{ $keranjang->id }})" class="btn btn-update" style="padding: 0.5rem 0.75rem;">-</button>
+                                    <input type="number" name="jumlah" id="qty-{{ $keranjang->id }}" value="{{ $keranjang->jumlah }}" min="1" max="{{ $keranjang->produk->stok_produk }}" data-max="{{ $keranjang->produk->stok_produk }}">
+                                    <button type="button" onclick="increaseQtyCart({{ $keranjang->id }})" class="btn btn-update" style="padding: 0.5rem 0.75rem;">+</button>
                                     <button type="submit" class="btn btn-update">Update</button>
                                 </form>
                             </td>
@@ -398,7 +433,7 @@
                     <span class="summary-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
                 </div>
                 <div class="cart-actions">
-                    <button class="btn btn-primary" style="flex: 1;">Checkout</button>
+                    <a href="{{ route('checkout.index') }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">Checkout</a>
                     <form action="{{ route('keranjang.clear') }}" method="POST" style="flex: 1;">
                         @csrf
                         <button type="submit" class="btn btn-secondary" style="width: 100%;" onclick="return confirm('Kosongkan keranjang?')">Kosongkan</button>

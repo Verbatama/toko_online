@@ -153,10 +153,41 @@
                 @csrf
                 <input type="hidden" name="produk_id" value="{{ $produk->id }}">
                 <label for="jumlah" style="margin-right: 10px;"><strong>Jumlah:</strong></label>
-                <input type="number" name="jumlah" id="jumlah" value="1" min="1" max="{{ $produk->stok_produk }}" 
-                       style="width: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px;">
+                <div style="display: inline-flex; align-items: center; gap: 5px; margin-right: 10px;">
+                    <button type="button" onclick="decreaseQty()" class="btn" style="padding: 8px 15px; margin: 0;">-</button>
+                    <input type="number" name="jumlah" id="jumlah" value="1" min="1" max="{{ $produk->stok_produk }}" 
+                           style="width: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; text-align: center;">
+                    <button type="button" onclick="increaseQty()" class="btn" style="padding: 8px 15px; margin: 0;">+</button>
+                </div>
                 <button type="submit" class="btn">Tambah ke Keranjang</button>
             </form>
+            <script>
+                const maxStock = {{ $produk->stok_produk }};
+                
+                function increaseQty() {
+                    const input = document.getElementById('jumlah');
+                    const currentVal = parseInt(input.value) || 1;
+                    if (currentVal < maxStock) {
+                        input.value = currentVal + 1;
+                    }
+                }
+                
+                function decreaseQty() {
+                    const input = document.getElementById('jumlah');
+                    const currentVal = parseInt(input.value) || 1;
+                    if (currentVal > 1) {
+                        input.value = currentVal - 1;
+                    }
+                }
+                
+                // Validasi input manual
+                document.getElementById('jumlah').addEventListener('input', function() {
+                    let value = parseInt(this.value) || 1;
+                    if (value < 1) value = 1;
+                    if (value > maxStock) value = maxStock;
+                    this.value = value;
+                });
+            </script>
         @else
             <button class="btn" disabled>Stok Habis</button>
         @endif

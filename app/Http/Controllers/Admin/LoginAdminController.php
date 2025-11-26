@@ -13,13 +13,8 @@ class LoginAdminController extends Controller
     public function showLoginForm()
     {
         // Jika sudah login sebagai admin, redirect ke admin panel
-        if (session('user_id')) {
-            $user = User::find(session('user_id'));
-            if ($user && $user->role === 'admin') {
-                return redirect('/admin');
-            }
-            // Jika login sebagai user, redirect ke home
-            return redirect('/')->with('error', 'Akses ditolak');
+        if (session('admin_user_id') && session('admin_user_role') === 'admin') {
+            return redirect('/admin');
         }
         
         return view('admin.login');
@@ -40,12 +35,12 @@ class LoginAdminController extends Controller
 
         // Cek apakah user ada dan password benar
         if ($user && Hash::check($request->password, $user->password)) {
-            // Simpan data admin ke session
+            // Simpan data admin ke session dengan prefix 'admin_'
             session([
-                'user_id' => $user->id,
-                'user_name' => $user->nama,
-                'user_email' => $user->email,
-                'user_role' => $user->role
+                'admin_user_id' => $user->id,
+                'admin_user_name' => $user->nama,
+                'admin_user_email' => $user->email,
+                'admin_user_role' => $user->role
             ]);
 
             return redirect('/admin')->with('success', 'Login admin berhasil!');
@@ -59,7 +54,7 @@ class LoginAdminController extends Controller
     // Logout admin
     public function logout()
     {
-        session()->flush();
+        session()->forget(['admin_user_id', 'admin_user_name', 'admin_user_email', 'admin_user_role']);
         return redirect('/admin/login')->with('success', 'Logout berhasil!');
     }
 }

@@ -9,11 +9,11 @@ class KategoriController extends Controller
     // Method untuk mengecek apakah user sudah login sebagai admin
     private function checkAdminAuth()
     {
-        if (!session('user_id')) {
+        if (!session('admin_user_id')) {
             return redirect('/admin/login')->with('error', 'Silakan login terlebih dahulu!');
         }
 
-        $user = User::find(session('user_id'));
+        $user = User::find(session('admin_user_id'));
         
         if (!$user || $user->role !== 'admin') {
             session()->flush();

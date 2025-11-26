@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Produk;
@@ -12,13 +13,13 @@ class KeranjangController extends Controller
     public function index()
     {
         // Cek apakah user sudah login
-        if (!session('user_id')) {
+        if (!session('logged_user_id')) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu');
         }
 
         // Ambil data keranjang user dengan relasi produk
         $keranjangs = Keranjang::with('produk.kategori')
-            ->where('user_id', session('user_id'))
+            ->where('user_id', session('logged_user_id'))
             ->get();
 
         // Hitung total harga
@@ -33,7 +34,7 @@ class KeranjangController extends Controller
     public function store(Request $request)
     {
         // Cek apakah user sudah login
-        if (!session('user_id')) {
+        if (!session('logged_user_id')) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu');
         }
 
@@ -49,7 +50,7 @@ class KeranjangController extends Controller
         }
 
         // Cek apakah produk sudah ada di keranjang
-        $keranjang = Keranjang::where('user_id', session('user_id'))
+        $keranjang = Keranjang::where('user_id', session('logged_user_id'))
             ->where('produk_id', $request->produk_id)
             ->first();
 
@@ -66,7 +67,7 @@ class KeranjangController extends Controller
         } else {
             // Tambah produk baru ke keranjang
             Keranjang::create([
-                'user_id' => session('user_id'),
+                'user_id' => session('logged_user_id'),
                 'produk_id' => $request->produk_id,
                 'jumlah' => $request->jumlah,
             ]);
@@ -83,7 +84,7 @@ class KeranjangController extends Controller
         ]);
 
         $keranjang = Keranjang::where('id', $id)
-            ->where('user_id', session('user_id'))
+            ->where('user_id', session('logged_user_id'))
             ->firstOrFail();
 
         // Cek stok
@@ -100,7 +101,7 @@ class KeranjangController extends Controller
     public function destroy($id)
     {
         $keranjang = Keranjang::where('id', $id)
-            ->where('user_id', session('user_id'))
+            ->where('user_id', session('logged_user_id'))
             ->firstOrFail();
 
         $keranjang->delete();
@@ -111,7 +112,7 @@ class KeranjangController extends Controller
     // Hapus semua item di keranjang
     public function clear()
     {
-        Keranjang::where('user_id', session('user_id'))->delete();
+        Keranjang::where('user_id', session('logged_user_id'))->delete();
 
         return back()->with('success', 'Keranjang berhasil dikosongkan');
     }
